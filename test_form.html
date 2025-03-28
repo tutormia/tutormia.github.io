@@ -1,34 +1,115 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="en"> -->
+<!-- <head> -->
+<!-- 	<meta charset="UTF-8"> -->
+<!--     	<meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<!--     	<title>Booking Page</title> -->
+<!--     	<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script> -->
+<!--     	<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script> -->
+<!--     	<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script> -->
+<!-- </head> -->
+<!-- <body> -->
+<!--     	<div id="not-logged-in"> -->
+<!--         	<h3>Please log in</h3> -->
+<!--         	<form onsubmit="login(event)"> -->
+<!--                 	<input type="text" id="email" placeholder="email"/> -->
+<!--                 	<input type="password" id="password" placeholder="password"/> -->
+<!--                 	<button type="submit">Submit</button> -->
+<!--         	</form> -->
+<!-- 	</div> -->
+<!-- 	<div id="logged-in"> -->
+<!--         	<h3>You are logged in now</h3> -->
+<!--         	<button onclick="logout()">Logout</button> -->
+<!-- 	</div> -->
+
+
+<!-- 	<script src="assets/js/test_message.js"></script> -->
+<!--     	<script src="assets/js/booking.js"></script> -->
+<!--     	<script src="assets/js/firebaseConfig.js"></script> -->
+<!-- </body> -->
+<!-- </html> -->
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Page</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <style>
-        #message {
-            display: block;
-            background-color: white;
-            border: 1px solid black;
-            padding: 10px;
-            margin: 10px 0;
-            color: black;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-    </style>
+	<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>Booking Page</title>
+    	<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    	<script src="assets/js/firebaseConfig.js"></script>
 </head>
-<body>
-    <div id="message"></div>
-    <div class="col-12">
-        <ul class="actions">
-            <li><input type="submit" value="Submit Request" /></li>
-            <li><button onclick="showSuccessMessage('Test message!')">Test Success Message</button></li>
-        </ul>
-    </div>
 
-    <script src="assets/js/test_message.js"></script>
-    <script src="assets/js/booking.js"></script>
+<body>
+	<!-- <div id="not-logged-in">Please log in</div> -->
+	<!-- <div id="logged-in" style="display:none;">Welcome back!</div> -->
+	<div id="firebase-status"></div>
+    	<div id="not-logged-in">Please log in</div>
+    	<div id="logged-in" style="display:none;">Welcome back!</div>
+
+	<div id="not-logged-in">
+		<h3>Please log in</h3>
+		<form onsubmit="login(event)">
+			<input type="text" id="email" placeholder="email"/>
+			<input type="password" id="password" placeholder="password"/>
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+	<div id="logged-in">
+		<h3>You are logged in now</h3>
+		<button onclick="logout()">Logout</button>
+	</div>
+
+	<form onsubmit="login(event)">
+	    <input type="email" id="email" placeholder="Email" required>
+	    <input type="password" id="password" placeholder="Password" required>
+	    <button type="submit">Login</button>
+	</form>
+
+	<button onclick="logout()">Logout</button>
+
+	<script type="module">
+		// Your Firebase configuration
+		var firebaseConfig = {
+		    apiKey: "AIzaSyAsD-bjN1GeLhLIJ_1NOQjfZOFcbg9Ygks",
+		    authDomain: "tutormia-3df78.firebaseapp.com",
+		    databaseURL: "https://tutormia-3df78-default-rtdb.firebaseio.com",
+		    projectId: "tutormia-3df78",
+		    storageBucket: "tutormia-3df78.appspot.com",
+		    messagingSenderId: "918075738562",
+		    appId: "1:918075738562:web:ab2adfebe32419bad5ee5b",
+		    measurementId: "G-JGPLNGSKL2"
+		};
+
+		// Initialize Firebase
+		try {
+		    if (!firebase.apps.length) {
+			firebase.initializeApp(firebaseConfig);
+			console.log("Firebase has been initialized correctly.");
+			document.getElementById('firebase-status').textContent = "Firebase is initialized correctly.";
+		    } else {
+			console.log("Firebase was already initialized.");
+			document.getElementById('firebase-status').textContent = "Firebase is already initialized.";
+		    }
+		} catch (error) {
+		    console.error("Error initializing Firebase:", error);
+		    document.getElementById('firebase-status').textContent = "Failed to initialize Firebase.";
+		}
+
+		// Firebase Auth State Check
+		firebase.auth().onAuthStateChanged(function(user) {
+		    var notLoggedIn = document.getElementById('not-logged-in');
+		    var loggedIn = document.getElementById('logged-in');
+
+		    if (user) {
+			loggedIn.style.display = 'block';
+			notLoggedIn.style.display = 'none';
+		    } else {
+			loggedIn.style.display = 'none';
+			notLoggedIn.style.display = 'block';
+		    }
+		});
+	</script>
+
 </body>
 </html>
-
